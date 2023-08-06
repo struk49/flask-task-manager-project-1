@@ -46,6 +46,7 @@ def register():
         session["user"] = request.form.get("username").lower()
         flash("Registration Successful!")
         return redirect(url_for("profile", username=session["user"]))
+
     return render_template("register.html")
 
 
@@ -61,8 +62,10 @@ def signin():
             if check_password_hash(
                     existing_user["password"], request.form.get("password")):
                 session["user"] = request.form.get("username").lower()
-                flash("Welcome, {}".format(request.form.get("username")))
-                return redirect(url_for("profile", username=session["user"]))
+                flash("Welcome, {}".format(
+                    request.form.get("username")))
+                return redirect(url_for(
+                    "profile", username=session["user"]))
             else:
                 # invalid password match
                 flash("Incorrect Username and/or Password")
@@ -70,8 +73,8 @@ def signin():
 
         else:
             # username doesn't exist
-            flash("Incorret Username and/or Password")
-            return redirect(url_for("siginin"))
+            flash("Incorrect Username and/or Password")
+            return redirect(url_for("signin"))
 
     return render_template("signin.html")
 
@@ -88,10 +91,10 @@ def profile(username):
     return redirect(url_for("signin"))
 
 
-@app.route("/signout")
-def signout():
-    # remove user from session cookies
-    flash("you have been signed out")
+@app.route("/signin")
+def logout():
+    # remove user from session cookie
+    flash("You have been signed out")
     session.pop("user")
     return redirect(url_for("signin"))
 
